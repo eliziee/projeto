@@ -93,6 +93,6 @@ Durante a implementação das funcionalidades, foram utilizados recursos como:
 
 ### 4. Considerações sobre o uso da IA
 
-A Inteligência Artificial foi utilizada como ferramenta complementar durante o desenvolvimento do projeto, auxiliando na compreensão dos conceitos de programação e na implementação de funcionalidades específicas. O grupo ficou responsável pela construção e integração dos recursos ao sistema, devendo compreender a lógica aplicada e ser capaz de explicar o código apresentado.
+A Inteligência Artificial foi utilizada como ferramenta complementar durante o desenvolvimento do projeto, auxiliando na compreensão dos conceitos de programação e na implementação de funcionalidades específicas
 
 Os prompts registrados neste documento representam as principais atividades relacionadas aos trechos de código documentados
