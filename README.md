@@ -96,10 +96,5 @@ Durante a implementação das funcionalidades, foram utilizados recursos como:
 A Inteligência Artificial foi utilizada como ferramenta complementar durante o desenvolvimento do projeto, auxiliando na compreensão dos conceitos de programação e na implementação de funcionalidades específicas. O grupo ficou responsável pela construção e integração dos recursos ao sistema, devendo compreender a lógica aplicada e ser capaz de explicar o código apresentado.
 
 Os prompts registrados neste documento representam as principais atividades relacionadas aos trechos de código documentados. A equipe deve revisar os exemplos e ajustá-los para que correspondam às solicitações efetivamente realizadas durante o desenvolvimento.
-
-### 5. Integrantes da equipe
-
-- Nome do integrante 1
-- Nome do integrante 2
 - Nome do integrante 3
 
