@@ -35,7 +35,7 @@ function agendar() {
 </script>
 
 <template>
-  <Cabecalho titulo="AgendaSaúde" subtitulo="Marque sua consulta médica" />
+  <Cabecalho titulo="+Saúde" subtitulo="Marque sua consulta médica" />
 
   <main>
     <h2>Nossos médicos</h2>
@@ -84,7 +84,7 @@ function agendar() {
     />
   </main>
 
-  <Rodape texto="AgendaSaúde - Projeto de Vue.js" />
+  <Rodape texto="+Saúde - Projeto de Vue.js" />
 </template>
 
 <style>
