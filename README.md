@@ -10,7 +10,7 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 ### 1. Sobre o projeto
 
-O +Saúde é um sistema desenvolvido pelo grupo com o objetivo de apresentar médicos, disponibilizar seus horários de atendimento e permitir o agendamento e o cancelamento de consultas. O projeto foi desenvolvido utilizando Vue.js, JavaScript, HTML e CSS, aplicando os conhecimentos adquiridos durante o curso de Análise e Desenvolvimento de Sistemas.
+O +Saúde é um sistema desenvolvido pelo grupo com o objetivo de apresentar médicos, disponibilizar seus horários de atendimento e permitir o agendamento e o cancelamento de consultas. O projeto foi desenvolvido utilizando Vue.js, JavaScript, HTML e CSS, aplicando os conhecimentos adquiridos durante as aulas
 
 Durante o desenvolvimento, a equipe utilizou a Inteligência Artificial como ferramenta de apoio para esclarecer dúvidas, compreender recursos de programação e auxiliar na implementação de funcionalidades específicas.
 
