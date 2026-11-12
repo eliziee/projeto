@@ -6,10 +6,10 @@ import CardConsulta from './components/cardconsulta.vue'
 import Rodape from './components/rodape.vue'
 
 const medicos = ref([
-  { nome: 'Dra. Ana Souza', especialidade: 'Cardiologia', horario: 'Seg e Qua, 8h às 12h' },
-  { nome: 'Dr. João Lima', especialidade: 'Pediatria', horario: 'Ter e Qui, 14h às 18h' },
+  { nome: 'Dra. Katarina lima', especialidade: 'Cardiologia', horario: 'Seg e Qua, 8h às 12h' },
+  { nome: 'Dr. Yohan Tadashi', especialidade: 'Pediatria', horario: 'Ter e Qui, 14h às 18h' },
   { nome: 'Dra. Carla Mendes', especialidade: 'Dermatologia', horario: 'Sex, 8h às 12h' },
-  { nome: 'Dr. Pedro Alves', especialidade: 'Ortopedia', horario: 'Seg a Qui, 14h às 17h' }
+  { nome: 'Dr. Alexandre Alves', especialidade: 'Ortopedia', horario: 'Seg a Qui, 14h às 17h' }
 ])
 
 const consultas = ref([])
