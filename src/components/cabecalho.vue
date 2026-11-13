@@ -6,17 +6,16 @@ defineProps({
 </script>
 
 <template>
-  <header>
-    <h1>{{ titulo }}</h1>
-    <p>{{ subtitulo }}</p>
-  </header>
+<header class="text-center text-white px-3 py-3 py-md-4">
+<h1 class="mb-2">
+<img src="/logo-saude.png" :alt="titulo" class="img-fluid" width="240" />
+</h1>
+  <p class="mb-0 opacity-75">{{ subtitulo }}</p>
+</header>
 </template>
 
 <style scoped>
 header {
-  background: #0f5c63;
-  color: white;
-  text-align: center;
-  padding: 30px;
+background-color: #0f5c63;
 }
 </style>

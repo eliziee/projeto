@@ -1,103 +1,145 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Cabecalho from './components/cabecalho.vue'
 import CardMedico from './components/cardmedico.vue'
 import CardConsulta from './components/cardconsulta.vue'
 import Rodape from './components/rodape.vue'
+import { plano } from './plano.js'
+import Avaliacoes from './components/avaliacoes.vue'
 
-const medicos = ref([
-  { nome: 'Dra. Katarina lima', especialidade: 'Cardiologia', horario: 'Seg e Qua, 8h às 12h' },
-  { nome: 'Dr. Yohan Tadashi', especialidade: 'Pediatria', horario: 'Ter e Qui, 14h às 18h' },
-  { nome: 'Dra. Carla Mendes', especialidade: 'Dermatologia', horario: 'Sex, 8h às 12h' },
-  { nome: 'Dr. Alexandre Alves', especialidade: 'Ortopedia', horario: 'Seg a Qui, 14h às 17h' }
-])
+const medicos = ref([])
+const erroMedicos = ref('')
+
+async function carregarMedicos() {
+  try {
+    const resposta = await fetch('/api/medicos')
+
+    if (!resposta.ok) {
+      throw new Error(`HTTP ${resposta.status}`)
+    }
+
+    medicos.value = await resposta.json()
+  } catch {
+    erroMedicos.value = 'Não foi possível carregar os médicos.'
+  }
+}
+
+onMounted(carregarMedicos)
 
 const consultas = ref([])
+
+function criarPlano(novoPlano) {
+  plano.value = novoPlano
+}
 
 const nomePaciente = ref('')
 const medicoEscolhido = ref('')
 const dataConsulta = ref('')
 const horaConsulta = ref('')
+const ultimaCancelada = ref(null)
+let temporizadorDesfazer
 
-function agendar() {
-  consultas.value.push({
-    paciente: nomePaciente.value,
-    medico: medicoEscolhido.value,
-    data: dataConsulta.value,
-    hora: horaConsulta.value
-  })
-
-  nomePaciente.value = ''
-  medicoEscolhido.value = ''
-  dataConsulta.value = ''
-  horaConsulta.value = ''
+function agendar(consulta) {
+  consultas.value.push(consulta)
 }
+
+function cancelarConsulta(index) {
+  const [consulta] = consultas.value.splice(index, 1)
+  if (!consulta) return
+
+  clearTimeout(temporizadorDesfazer)
+  ultimaCancelada.value = { consulta, index }
+
+  temporizadorDesfazer = setTimeout(() => {
+    ultimaCancelada.value = null
+  }, 10000)
+}
+
+function desfazerCancelamento() {
+  if (!ultimaCancelada.value) return
+
+  clearTimeout(temporizadorDesfazer)
+
+  const { consulta, index } = ultimaCancelada.value
+  consultas.value.splice(index, 0, consulta)
+  ultimaCancelada.value = null
+}
+
 </script>
 
 <template>
-  <Cabecalho titulo="+Saúde" subtitulo="Marque sua consulta médica" />
+<Cabecalho titulo="+Saúde" subtitulo="Marque sua consulta médica" />
 
-  <main>
-    <h2>Nossos médicos</h2>
-    <div class="medicos">
-      <CardMedico
-        v-for="(m, index) in medicos"
-        :key="index"
-        :nome="m.nome"
-        :especialidade="m.especialidade"
-        :horario="m.horario"
-      />
-    </div>
+<main>
 
-    <h2>Agendar consulta</h2>
-    <form @submit.prevent="agendar">
-      <label>Nome do paciente</label>
-      <input type="text" v-model="nomePaciente" required />
+<nav
+  class="nav nav-pills nav-justified gap-2 mb-4 p-2 bg-white border rounded-3 main-nav"
+  aria-label="Navegação principal"
+>
+<RouterLink class="nav-link" to="/" exact-active-class="active">
+Meu plano
+</RouterLink>
 
-      <label>Médico</label>
-      <select v-model="medicoEscolhido" required>
-        <option value="" disabled>Escolha um médico</option>
-        <option v-for="(m, index) in medicos" :key="index" :value="m.nome">
-          {{ m.nome }} - {{ m.especialidade }}
-        </option>
-      </select>
+<template v-if="plano">
+<RouterLink class="nav-link" to="/medicos" exact-active-class="active">
+  Médicos
+</RouterLink>
+<RouterLink class="nav-link" to="/agendar" exact-active-class="active">
+  Agendar
+</RouterLink>
+<RouterLink class="nav-link" to="/consultas" exact-active-class="active">
+  Consultas
+</RouterLink>
+</template>
 
-      <label>Data</label>
-      <input type="date" v-model="dataConsulta" required />
+<template v-else>
+<span class="nav-link disabled" aria-disabled="true">Médicos</span>
+<span class="nav-link disabled" aria-disabled="true">Agendar</span>
+<span class="nav-link disabled" aria-disabled="true">Consultas</span>
+</template>
 
-      <label>Horário</label>
-      <input type="time" v-model="horaConsulta" required />
+</nav>
 
-      <button type="submit">Agendar</button>
-    </form>
+<p v-if="erroMedicos" class="alert alert-warning" role="alert">
+{{ erroMedicos }}
+</p>
 
-    <h2>Consultas agendadas</h2>
-    <p v-if="consultas.length === 0">Nenhuma consulta agendada ainda.</p>
+<RouterView
+  :medicos="medicos"
+  :consultas="consultas"
+  :pode-desfazer="ultimaCancelada !== null"
+  @agendar="agendar"
+  @cancelar="cancelarConsulta"
+  @desfazer="desfazerCancelamento"
+  :plano="plano"
+  @criar-plano="criarPlano"
+/>
 
-    <CardConsulta
-      v-for="(c, index) in consultas"
-      :key="index"
-      :paciente="c.paciente"
-      :medico="c.medico"
-      :data="c.data"
-      :hora="c.hora"
-    />
-  </main>
+<Avaliacoes />
+</main>
 
-  <Rodape texto="+Saúde - Projeto de Vue.js" />
+<Rodape texto="Projeto demonstrativo - Vue.js" />
 </template>
 
 <style>
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;;
   background: #eef4f4;
 }
 
 main {
+  flex: 1;
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 20px 40px;
 }
 
 h2 {
@@ -106,32 +148,14 @@ h2 {
 </style>
 
 <style scoped>
-.medicos {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
+.main-nav {
+  --bs-nav-link-color: #0f5c63;
+  --bs-nav-link-hover-color: #0c444a;
+  --bs-nav-pills-link-active-color: #0c444a;
+  --bs-nav-pills-link-active-bg: #d3e8e8;
 }
 
-form {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-input,
-select {
-  padding: 8px;
-}
-
-button {
-  background: #0f5c63;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
+.main-nav .nav-link.active {
+  font-weight: 600;
 }
 </style>

@@ -91,8 +91,36 @@ Durante a implementação das funcionalidades, foram utilizados recursos como:
 - **`v-if`, `v-else` e `v-show`:** controle da exibição de elementos.
 - **Eventos `@click` e `@submit.prevent`:** execução de ações na interface.
 
+## API simulada do +Saúde
+
+Na atividade, aprendemos a consumir APIs que já existiam. No +Saúde, fomos um passo além e criamos uma API simulada para praticar os dois lados da comunicação: o servidor que recebe a requisição e o frontend que usa a resposta.
+
+### Como a API funciona
+
+A API foi implementada no `vite.config.js` com um plugin do Vite. Usamos o `configureServer` para registrar funções que respondem a requisições específicas no servidor de desenvolvimento. As respostas são enviadas em JSON.
+
+| Método| Rota             | O que faz |
+| ---   | ---               | --- |
+| `GET` | `/api/medicos`    | Retorna os médicos exibidos nos cards e no formulário de agendamento. |
+| `GET` | `/api/avaliacoes` | Retorna as quatro avaliações de exemplo e as avaliações enviadas durante a sessão. |
+| `POST'| `/api/avaliacoes` | Recebe uma avaliação, valida a nota e o comentário e retorna a avaliação criada com status `201`. |
+
+No Vue, usamos a função `fetch()` do navegador para chamar essas rotas. Primeiro, fizemos o testes  das rotas `GET` abrindo seus endereços na prévia do StackBlitz. Depois de confirmar o funcionamento, testamos o `POST` pelo console antes de conectá-lo ao formulário. Quando o envio é bem-sucedido, o Vue usa a resposta do servidor para exibir a nova avaliação sem precisar recarregar a página.
+
+Para testar o projeto, execute:
+
+```bash
+npm ci
+npm run dev
+```
+
+A API simulada funciona no servidor de desenvolvimento do Vite. As avaliações enviadas ficam em memória enquanto o servidor está rodando. Recarregar a página mantém as avaliações da sessão. Reiniciar o servidor mantém as avaliações de exemplo e apaga as adicionadas pelo cliente.
+
+
 ### 4. Considerações sobre o uso da IA
 
 A Inteligência Artificial foi utilizada como ferramenta complementar durante o desenvolvimento do projeto, auxiliando na compreensão dos conceitos de programação e na implementação de funcionalidades específicas
 
-Os prompts registrados neste documento representam as principais atividades relacionadas aos trechos de código documentados
+Os prompts registrados neste documento representam as principais atividades relacionadas aos trechos de código documentados.
+
+Usamos o ChatGPT, utilizando a ferramenta Work, dando upload no arquivo ZIP do site, como apoio para aprender a criar uma API, já que a orientação em aula havia sido sobre como utilizar APIs já prontas. O ChatGPT sugeriu usar o servidor de desenvolvimento do Vite e forneceu os exemplos de código para configurar as rotas e explicando como enviar avaliações com `POST`. Aplicamos as alterações no StackBlitz e testamos as rotas e o formulário ao longo do desenvolvimento.
